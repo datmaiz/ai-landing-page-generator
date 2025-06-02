@@ -1,11 +1,17 @@
 import DownloadIcon from '@/assets/download-icon.svg'
 import LinkIcon from '@/assets/link-circle.svg'
-import type { Content } from '@/types'
+import type { AIResponse, Content } from '@/types'
 import { generateHTML } from '@/util/helper'
 
-export const ExportButtons = ({ content }: { content: Content }) => {
+interface ExportButtonProps {
+	content: Content
+	code?: AIResponse
+}
+
+export const ExportButtons = ({ content, code }: ExportButtonProps) => {
 	const downloadHTML = () => {
-		const html = generateHTML(content)
+		if (!code) return
+		const html = generateHTML(content, code)
 		const blob = new Blob([html], { type: 'text/html' })
 		const link = document.createElement('a')
 		link.href = URL.createObjectURL(blob)
@@ -14,7 +20,8 @@ export const ExportButtons = ({ content }: { content: Content }) => {
 	}
 
 	const handleOpenNewTab = () => {
-		const htmlContent = generateHTML(content)
+		if (!code) return
+		const htmlContent = generateHTML(content, code)
 		const blob = new Blob([htmlContent], { type: 'text/html' })
 		const url = URL.createObjectURL(blob)
 		window.open(url, '_blank')

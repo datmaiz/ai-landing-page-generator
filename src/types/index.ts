@@ -4,3 +4,9 @@ export interface Content {
 	features: string[]
 	cta: string
 }
+
+export interface AIResponse {
+	html: string
+	css: string
+	js: string
+}
